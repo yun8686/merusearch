@@ -1,0 +1,63 @@
+extends layout
+
+block content
+  form(method="GET", target="./")
+    table
+      tr
+        td
+          label 名前:
+        td
+          span
+            input(type="text", name="keyword" value=keyword)
+      tr
+        td
+          label 価格
+        td(style="display:flex")
+          input(type="text", name="price_min" value=price_min)
+          p 〜
+          input(type="text", name="price_max" value=price_max)
+    input(type="submit", value="送信")
+    div(style="border: 2px solid #000000;")
+      h1 販売中で一番安い
+      - var shows=onsale_min;
+      table(border=0)
+        tr
+          - for(var i=0;i<shows.length;i++){var show=shows[i];
+          td
+            p #{show.name}: #{show.price} #{show.sold}
+            img(src=show.image)
+          - }
+
+    div(style="border: 2px solid #000000;")
+      h1 販売中で一番高い
+      - var shows=onsale_max;
+      table(border=0)
+        tr
+          - for(var i=0;i<shows.length;i++){var show=shows[i];
+          td
+            p #{show.name}: #{show.price} #{show.sold}
+            img(src=show.image)
+          - }
+
+
+    div(style="border: 2px solid #000000;")
+      h1 売切れで一番安い
+      - var shows=soldout_min;
+      table(border=0)
+        tr
+          - for(var i=0;i<shows.length;i++){var show=shows[i];
+          td
+            p #{show.name}: #{show.price} #{show.sold}
+            img(src=show.image)
+          - }
+
+    div(style="border: 2px solid #000000;")
+      h1 売切れで一番高い
+      - var shows=soldout_max;
+      table(border=0)
+        tr
+          - for(var i=0;i<shows.length;i++){var show=shows[i];
+          td
+            p #{show.name}: #{show.price} #{show.sold}
+            img(src=show.image)
+          - }
