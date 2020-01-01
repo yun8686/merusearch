@@ -2,62 +2,107 @@ extends layout
 
 block content
   form(method="GET", target="./")
-    table
+    table(border=2)
       tr
         td
           label 名前:
         td
           span
-            input(type="text", name="keyword" value=keyword)
+            input(type="text", name="keyword", value=keyword )
       tr
         td
           label 価格
         td(style="display:flex")
           input(type="text", name="price_min" value=price_min)
-          p 〜
+          i 〜
           input(type="text", name="price_max" value=price_max)
+      tr
+        td
+          label 商品の状態
+        td
+          input(type="checkbox", id=name="condition_all", value=1, checked=!!condition_all)
+          label(for="condition_all") すべて
+          br
+          input(type="checkbox", id="item_condition_id_1", name="item_condition_id_1", value=1, checked=!!item_condition_id[1])
+          label(for="item_condition_id_1") 新品、未使用
+            | &nbsp;
+          input(type="checkbox", id="item_condition_id_2", name="item_condition_id_2", value=1, checked=!!item_condition_id[2])
+          label(for="item_condition_id_2") 未使用に近い
+            | &nbsp;
+          input(type="checkbox", id="item_condition_id_3", name="item_condition_id_3", value=1, checked=!!item_condition_id[3])
+          label(for="item_condition_id_3") 目立った傷や汚れなし
+            | &nbsp;
+          input(type="checkbox", id="item_condition_id_4", name="item_condition_id_4", value=1, checked=!!item_condition_id[4])
+          label(for="item_condition_id_4") やや傷や汚れあり
+            | &nbsp;
+          input(type="checkbox", id="item_condition_id_5", name="item_condition_id_5", value=1, checked=!!item_condition_id[5])
+          label(for="item_condition_id_5") 傷や汚れあり
+            | &nbsp;
+          input(type="checkbox", id="item_condition_id_6", name="item_condition_id_6", value=1, checked=!!item_condition_id[6])
+          label(for="item_condition_id_6") 全体的に状態が悪い
+      tr
+        td
+          label 検索
+        td
+          input(type="checkbox", id="price_asc", name="price_asc", checked=!!price_asc)
+          label(for="price_asc") 販売中で一番安い
+            | &nbsp;
+          input(type="checkbox", id="price_desc", name="price_desc", checked=!!price_desc)
+          label(for="price_desc") 販売中で一番安い
+            | &nbsp;
+          input(type="checkbox", id="price_asc_sold", name="price_asc_sold", checked=!!price_asc_sold)
+          label(for="price_asc_sold") 売切れで一番安い
+            | &nbsp;
+          input(type="checkbox", id="price_desc_sold", name="price_desc_sold", checked=!!price_desc_sold)
+          label(for="price_desc_sold") 売切れで一番高い
+            | &nbsp;
+
     input(type="submit", value="送信")
-    div(style="border: 2px solid #000000;")
-      h1 販売中で一番安い
-      - var shows=onsale_min;
-      table(border=0)
-        tr
-          - for(var i=0;i<shows.length;i++){var show=shows[i];
-          td
-            p #{show.name}: #{show.price} #{show.sold}
-            img(src=show.image)
-          - }
+    - if(price_asc)
+      div(style="border: 2px solid #000000;")
+        h1 販売中で一番安い
+        - var shows=onsale_min;
+        table(border=0)
+          tr
+            - for(var i=0;i<shows.length;i++){var show=shows[i];
+            td
+              p #{show.name}: #{show.price} #{show.sold}
+              img(src=show.image)
+            - }
 
-    div(style="border: 2px solid #000000;")
-      h1 販売中で一番高い
-      - var shows=onsale_max;
-      table(border=0)
-        tr
-          - for(var i=0;i<shows.length;i++){var show=shows[i];
-          td
-            p #{show.name}: #{show.price} #{show.sold}
-            img(src=show.image)
-          - }
+    - if(price_desc)
+      div(style="border: 2px solid #000000;")
+        h1 販売中で一番高い
+        - var shows=onsale_max;
+        table(border=0)
+          tr
+            - for(var i=0;i<shows.length;i++){var show=shows[i];
+            td
+              p #{show.name}: #{show.price} #{show.sold}
+              img(src=show.image)
+            - }
 
 
-    div(style="border: 2px solid #000000;")
-      h1 売切れで一番安い
-      - var shows=soldout_min;
-      table(border=0)
-        tr
-          - for(var i=0;i<shows.length;i++){var show=shows[i];
-          td
-            p #{show.name}: #{show.price} #{show.sold}
-            img(src=show.image)
-          - }
+    - if(price_asc_sold)
+      div(style="border: 2px solid #000000;")
+        h1 売切れで一番安い
+        - var shows=soldout_min;
+        table(border=0)
+          tr
+            - for(var i=0;i<shows.length;i++){var show=shows[i];
+            td
+              p #{show.name}: #{show.price} #{show.sold}
+              img(src=show.image)
+            - }
 
-    div(style="border: 2px solid #000000;")
-      h1 売切れで一番高い
-      - var shows=soldout_max;
-      table(border=0)
-        tr
-          - for(var i=0;i<shows.length;i++){var show=shows[i];
-          td
-            p #{show.name}: #{show.price} #{show.sold}
-            img(src=show.image)
-          - }
+    - if(price_desc_sold)
+      div(style="border: 2px solid #000000;")
+        h1 売切れで一番高い
+        - var shows=soldout_max;
+        table(border=0)
+          tr
+            - for(var i=0;i<shows.length;i++){var show=shows[i];
+            td
+              p #{show.name}: #{show.price} #{show.sold}
+              img(src=show.image)
+            - }

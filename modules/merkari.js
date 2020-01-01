@@ -21,7 +21,7 @@ async function getBrowserPage () {
 function makeParam(obj){
   let param = "?";
   Object.keys(obj).forEach(key=>{
-    param += "&" + key + "=" + encodeURIComponent(obj[key])
+    param += "&" + encodeURIComponent(key) + "=" + encodeURIComponent(obj[key])
   });
   return param;
 }
@@ -31,6 +31,7 @@ async function runSearch(params){
   if (!page) {
     page = await getBrowserPage()
   }
+  if(params.keyword=="") return [];
   await page.goto(
     'https://www.mercari.com/jp/search/'+makeParam(Object.assign({
       "sort_order":"",
