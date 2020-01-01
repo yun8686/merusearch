@@ -59,6 +59,13 @@ async function runSearch(params){
   );
   const list = await page.evaluate((in_selectors) => {
     const list = [];
+    function isEmpty() {
+      const searchResultDesc = document.querySelectorAll(".search-result-description")[0];
+      return searchResultDesc && searchResultDesc.innerText.startsWith("該当する商品");
+    }
+    if (isEmpty()) {
+      return list;
+    }
     document.querySelectorAll('.items-box').forEach(v=>{
       const name = v.querySelector('.items-box-name').innerText;
       const price = v.querySelector('.items-box-price').innerText;
