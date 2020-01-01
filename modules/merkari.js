@@ -4,9 +4,9 @@ module.exports = {
   runSearch: runSearch,
 };
 
-let page, browser;
-
-async function getBrowserPage () {
+let browser;
+async function initBrowser () {
+  if (browser) return browser;
   const isDebug = process.env.NODE_ENV !== 'production'
 
   const launchOptions = {
@@ -15,9 +15,10 @@ async function getBrowserPage () {
     args: ['--no-sandbox']
   }
 
-  browser = await puppeteer.launch(launchOptions)
-  return browser.newPage()
+  return browser = await puppeteer.launch(launchOptions)
 }
+initBrowser();
+
 function makeParam(obj){
   let param = "?";
   Object.keys(obj).forEach(key=>{
@@ -28,10 +29,8 @@ function makeParam(obj){
 //runSearch().then(v=>process.exit());
 
 async function runSearch(params){
-  if (!page) {
-    page = await getBrowserPage()
-  }
   if(params.keyword=="") return [];
+  const page = await browser.newPage();
   await page.goto(
     'https://www.mercari.com/jp/search/'+makeParam(Object.assign({
       "sort_order":"",
@@ -79,6 +78,7 @@ async function runSearch(params){
     });
     return list;
   });
+  await page.close();
   return list;
 //  loadPromise = page.waitForNavigation();
 }

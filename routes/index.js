@@ -24,29 +24,30 @@ router.get('/', async (req, res, next)=>{
   const price_desc = req.query.price_desc;
   const price_desc_sold = req.query.price_desc_sold;
 
-  const results = ([
+  const searchPromises = [
     price_asc?
-      await merkari.runSearch(Object.assign({
+      merkari.runSearch(Object.assign({
         keyword: keyword, sort_order:"price_asc", "status_on_sale":1,
         price_min, price_max,
         item_condition_id
       },item_condition_obj)):[],
     price_asc_sold?
-      await merkari.runSearch(Object.assign({
+      merkari.runSearch(Object.assign({
         keyword: keyword, sort_order:"price_asc", "status_trading_sold_out":1,
         price_min, price_max,
       },item_condition_obj)):[],
     price_desc?
-      await merkari.runSearch(Object.assign({
+      merkari.runSearch(Object.assign({
         keyword: keyword, sort_order:"price_desc", "status_on_sale":1,
         price_min, price_max,
       },item_condition_obj)):[],
     price_desc_sold?
-      await merkari.runSearch(Object.assign({
+      merkari.runSearch(Object.assign({
         keyword: keyword, sort_order:"price_desc", "status_trading_sold_out":1,
         price_min, price_max,
       },item_condition_obj)):[],
-  ]);
+  ];
+  const results = await Promise.all(searchPromises);
   const onsale_min = results[0].filter((v,i)=>i<3);
   const soldout_min = results[1].filter((v,i)=>i<3);
   const onsale_max = results[2].filter((v,i)=>i<3);
